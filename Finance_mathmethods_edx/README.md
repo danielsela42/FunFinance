@@ -81,7 +81,7 @@ MC_calls(K, Np, Nt, mu, sigma, S0, dt)
 Estimates the price of a **European call option** with strike price `K` using Monte Carlo simulation:
 
 ```math
-C = \mathbb{E}[\max(S_T - K, 0)]
+C = &Eopf;[\max(S_T - K, 0)]
 ```
 
 ---
@@ -95,7 +95,7 @@ MC_puts(K, Np, Nt, mu, sigma, S0, dt)
 Estimates the price of a **European put option** with strike price `K`:
 
 ```math
-P = \mathbb{E}[\max(K - S_T, 0)]
+P = &Eopf;[\max(K - S_T, 0)]
 ```
 
 ---

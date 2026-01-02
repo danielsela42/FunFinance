@@ -41,7 +41,7 @@ Solving these gives
 s_1 = \frac{p_1}{p_I} S, \quad s_2 = \frac{p_2}{p_I} S
 ```
 
-where $`p_1 = 1/a_1`$, $`p_2 = 1/a_2`$, and $`p_I = p_1 + p_2`$. The **profit** is then given by
+where $`p_1 = \frac{1}{a_1}`$, $`p_2 = \frac{1}{a_2}`$, and $`p_I = p_1 + p_2`$. The **profit** is then given by
 
 ```math
 \text{Profit} = \frac{1}{p_I} S - S = \left(\frac{1}{p_I} - 1\right) S,
