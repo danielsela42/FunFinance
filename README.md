@@ -1,0 +1,1 @@
+This repository contains a couple small projects relating to finance. One is an arbitrage calculator: Given two bookmakers' odds, is there an arbitrage? If so, what is it? The second is a basic pricing Monte Carlo simulation.

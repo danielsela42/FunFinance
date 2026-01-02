@@ -2,9 +2,20 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 def MC_path(Nt, mu, sigma, S0, dt):
+    ''' Monte Carlo simulation of a single stock price path over Nt time steps
+
+    Inputs: Nt - number of time steps
+            mu - expected return
+            sigma - volatility
+            S0 - initial stock price
+            dt - time step size
+    '''
+
+    # Generate random returns
     zt = 2 * np.random.randint(2, size=Nt) - 1
     rt = mu * dt + zt * sigma * np.sqrt(dt)
 
+    # Use log pricing
     logS = [np.log(S0)]
     for j in range(Nt):
         logS.append(rt[j] + logS[-1])
@@ -13,6 +24,15 @@ def MC_path(Nt, mu, sigma, S0, dt):
 
 
 def MC_terminal_mean_std(Np, Nt, mu, sigma, S0, dt):
+    ''' Monte Carlo simulation to estimate mean and standard deviation of terminal stock price
+
+    Inputs: Np - number of simulated paths
+            Nt - number of time steps
+            mu - expected return
+            sigma - volatility
+            S0 - initial stock price
+            dt - time step size
+    '''
     terminals = list()
     # plt.figure()
     for _ in range(Np):
@@ -25,6 +45,15 @@ def MC_terminal_mean_std(Np, Nt, mu, sigma, S0, dt):
     return np.mean(terminals), np.std(terminals, ddof=1)
 
 def MC_mean_orig_returns(Np, Nt, mu, sigma, S0, dt):
+    ''' Monte Carlo simulation to estimate mean number of returns to origin
+
+    Inputs: Np - number of simulated paths
+            Nt - number of time steps
+            mu - expected return
+            sigma - volatility
+            S0 - initial stock price
+            dt - time step size
+    '''
     returns_to_origins = list()
     for _ in range(Np):
         S = MC_path(Nt, mu, sigma, S0, dt)
@@ -39,6 +68,16 @@ def MC_mean_orig_returns(Np, Nt, mu, sigma, S0, dt):
 
 
 def MC_calls(K, Np, Nt, mu, sigma, S0, dt):
+    ''' Monte Carlo simulation to estimate European call option price
+    
+    Inputs: K - strike price
+            Np - number of simulated paths
+            Nt - number of time steps
+            mu - expected return
+            sigma - volatility
+            S0 - initial stock price
+            dt - time step size
+    '''
     Cs = list()
     for _ in range(Np):
         S = MC_path(Nt, mu, sigma, S0, dt)
@@ -47,6 +86,16 @@ def MC_calls(K, Np, Nt, mu, sigma, S0, dt):
     return np.mean(Cs)
 
 def MC_puts(K, Np, Nt, mu, sigma, S0, dt):
+    ''' Monte Carlo simulation to estimate European put option price
+    
+    Inputs: K - strike price
+            Np - number of simulated paths
+            Nt - number of time steps
+            mu - expected return
+            sigma - volatility
+            S0 - initial stock price
+            dt - time step size
+    '''
     Ps = list()
     for _ in range(Np):
         S = MC_path(Nt, mu, sigma, S0, dt)
