@@ -8,20 +8,20 @@ This repository provides tools to explore **arbitrage opportunities in betting**
 
 Arbitrage in betting is the practice of using differences in odds offered by multiple bookmakers to guarantee a profit, independent of the outcome.
 
-Given odds (a) for an outcome (A), the **implied probability** is
+Given odds $`a`$ for an outcome $`A`$, the **implied probability** is
 
-[
+```math
 p = \frac{1}{a}.
-]
+```
 
-For multiple outcomes (A_1, \dots, A_n) with odds (a_1, \dots, a_n), the **total implied probability** is
+For multiple outcomes $`A_1, \dots, A_n`$ with odds $`a_1, \dots, a_n`$, the **total implied probability** is
 
-[
+```math
 p_I = \sum_{k=1}^{n} \frac{1}{a_k}.
-]
+```
 
-* If (p_I > 1), the bookmaker has an edge (they make a profit).
-* If (p_I < 1), a bettor can exploit the odds to create a guaranteed profit.
+* If $`p_I > 1`$, the bookmaker has an edge (they make a profit).
+* If $`p_I < 1`$, a bettor can exploit the odds to create a guaranteed profit.
 
 ---
 
@@ -29,29 +29,29 @@ p_I = \sum_{k=1}^{n} \frac{1}{a_k}.
 
 In standard arbitrage, the goal is to stake amounts so that **profit is the same regardless of the outcome**.
 
-For **two outcomes**, (A_1) and (A_2), with total stake (S):
+For **two outcomes**, $`A_1`$ and $`A_2`$, with total stake $`S`$:
 
-[
+```math
 s_1 + s_2 = S, \quad a_1 s_1 - S = a_2 s_2 - S
-]
+```
 
 Solving these gives
 
-[
+```math
 s_1 = \frac{p_1}{p_I} S, \quad s_2 = \frac{p_2}{p_I} S
-]
+```
 
-where (p_1 = 1/a_1), (p_2 = 1/a_2), and (p_I = p_1 + p_2). The **profit** is then given by
+where $`p_1 = 1/a_1`$, $`p_2 = 1/a_2`$, and $`p_I = p_1 + p_2`$. The **profit** is then given by
 
-[
+```math
 \text{Profit} = \frac{1}{p_I} S - S = \left(\frac{1}{p_I} - 1\right) S,
-]
-which is positive if and only if (p_I < 1).
+```
+which is positive if and only if $`p_I < 1`$.
 
-This readily generalizes to (n) outcomes:
-[
+This readily generalizes to $`n`$ outcomes:
+```math
 s_k = \frac{p_k}{p_I} S, \quad k=1,\dots,n
-]
+```
 with the same guaranteed profit.
 
 ---
@@ -60,11 +60,11 @@ with the same guaranteed profit.
 
 In biased arbitrage, the bettor **maximizes profit for one outcome** while ensuring no loss if the other outcome occurs.
 
-For two outcomes biased towards (A_1):
+For two outcomes biased towards $`A_1`$:
 
-[
+```math
 s_2 = \frac{S}{a_2}, \quad s_1 = S - s_2
-]
+```
 
 This strategy gives a higher profit for the favored outcome but may be lower than standard arbitrage in terms of uniformity.
 

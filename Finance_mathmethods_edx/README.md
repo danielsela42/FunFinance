@@ -8,18 +8,18 @@ The code is intended as **educational and exploratory work**, demonstrating how 
 
 ## Model Overview
 
-The stock price ( S_t ) is modeled using a **discrete-time log-price process**:
+The stock price $` S_t `$ is modeled using a **discrete-time log-price process**:
 
-[
+```math
 \log S_{t+1} = \log S_t + \mu \Delta t + \sigma \sqrt{\Delta t}, z_t
-]
+```
 
 where:
 
-* ( \mu ) is the expected return
-* ( \sigma ) is the volatility
-* ( \Delta t ) is the time step
-* ( z_t \in { -1, +1 } ) is a symmetric random variable
+* $` \mu `$ is the expected return
+* $` \sigma `$ is the volatility
+* $` \Delta t `$ is the time step
+* $` z_t \in \{ -1, +1 \} `$ is a symmetric random variable
 
 This corresponds to a **binomial approximation** of geometric Brownian motion.
 
@@ -80,9 +80,9 @@ MC_calls(K, Np, Nt, mu, sigma, S0, dt)
 
 Estimates the price of a **European call option** with strike price `K` using Monte Carlo simulation:
 
-[
+```math
 C = \mathbb{E}[\max(S_T - K, 0)]
-]
+```
 
 ---
 
@@ -94,9 +94,9 @@ MC_puts(K, Np, Nt, mu, sigma, S0, dt)
 
 Estimates the price of a **European put option** with strike price `K`:
 
-[
+```math
 P = \mathbb{E}[\max(K - S_T, 0)]
-]
+```
 
 ---
 
@@ -135,8 +135,8 @@ The script prints the estimated **European put option price**.
 
 ## Possible Extensions
 
-* Add risk-neutral drift ( \mu = r )
-* Include discounting ( e^{-rT} )
+* Add risk-neutral drift $` \mu = r `$
+* Include discounting $` e^{-rT} `$
 * Replace binomial noise with Gaussian noise
 * Compare against Black–Scholes formula
 * Plot path ensembles and payoff distributions
