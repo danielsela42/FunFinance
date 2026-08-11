@@ -8,20 +8,44 @@ The code is intended as **educational and exploratory work**, demonstrating how 
 
 ## Model Overview
 
-The stock price $` S_t `$ is modeled using a **discrete-time log-price process**:
+The stock price $` S_t `$ is modeled using a binomial approximation of **geometric Brownian motion**. For a stock with expected return $`\mu`$ and volatility $`\sigma`$, we have
 
 ```math
-\log S_{t+1} = \log S_t + \mu \Delta t + \sigma \sqrt{\Delta t}, z_t
+d \log S_t = \left( \mu - \frac{1}{2}\sigma^2 \right) d t + \sigma \, d W_t.
 ```
 
-where:
+The Brownian motion increment can be approximated using a symmetric binomial random variable:
+```math
+z_t = \begin{cases}
++1 & \text{with probability } 1/2, \\
+-1 & \text{with probability } 1/2
+\end{cases}
+```
+so that
+```math
+d W_t \approx \sqrt{d t}\, z_t
+```
 
-* $` \mu `$ is the expected return
-* $` \sigma `$ is the volatility
-* $` \Delta t `$ is the time step
-* $` z_t \in \{ -1, +1 \} `$ is a symmetric random variable
+Hence, in discrete-time, we have
 
-This corresponds to a **binomial approximation** of geometric Brownian motion.
+```math
+\log S_{t+ \Delta t} = \log S_t + \left( \mu - \frac{1}{2}\sigma^2 \right) \Delta t + \sigma \sqrt{\Delta t}, z_t
+```
+
+---
+
+## Risk-Neutral Pricing
+
+European option prices are calculated using **risk-neutral pricing**. Under the risk-netural measure, the drift is equal to the risk-free interest rate $`r`$. Therefore, the Monte Carlo paths used for option pricing have log-price dynamics
+
+```math
+d \log S_t = \left( r - \frac{1}{2} \sigma^2 \right) d t + \sigma\, d z_t
+```
+
+The option price is discounted:
+```math
+V_0 = e^{-r T} &Eopf;[\text{payoff}].
+```
 
 ---
 
@@ -29,10 +53,12 @@ This corresponds to a **binomial approximation** of geometric Brownian motion.
 
 * Simulates individual stock price paths
 * Estimates terminal price statistics
-* Counts returns to the initial price
-* Prices European call options
-* Prices European put options
-
+* Counts returns/crossings of the initial price
+* Prices European call options using risk-neutral measure
+* Prices European put options using risk-nutral measure
+* Discounts payoffs using risk-neutral interest rate
+* Estimates Monte Carlo standard error
+* Includes analytical Black-Scholes call and put pricing
 ---
 
 ## Functions
@@ -68,20 +94,18 @@ Estimates the average number of times a price path:
 * Returns exactly to the initial price, or
 * Crosses the initial price level
 
-This provides a simple diagnostic of path fluctuation behavior.
-
 ---
 
 ### `MC_calls`
 
 ```python
-MC_calls(K, Np, Nt, mu, sigma, S0, dt)
+MC_calls(K, Np, Nt, r, sigma, S0, dt)
 ```
 
 Estimates the price of a **European call option** with strike price `K` using Monte Carlo simulation:
 
 ```math
-C = &Eopf;[\max(S_T - K, 0)]
+C = e^{-r T} &Eopf;[\max(S_T - K, 0)]
 ```
 
 ---
@@ -95,8 +119,29 @@ MC_puts(K, Np, Nt, mu, sigma, S0, dt)
 Estimates the price of a **European put option** with strike price `K`:
 
 ```math
-P = &Eopf;[\max(K - S_T, 0)]
+P = e^{-r T} &Eopf;[\max(K - S_T, 0)]
 ```
+
+---
+
+### `black_scholes_call`
+
+```python
+black_scholes_call(S0, K, T, r, sigma)
+```
+
+Calculates the analytical Black-Scholes price of a European call option.
+
+---
+
+### `black_scholes_put`
+
+```python
+black_scholes_put(S0, K, T, r, sigma)
+```
+
+Calculates the analytical Black-Scholes price of a European put option.
+
 
 ---
 
@@ -108,25 +153,24 @@ Run the script directly:
 python CallPutPricingMC.py
 ```
 
-### Default Parameters
+### Example Parameters
 
-```python
+```python CallPutPricingMC.py
 Np = 10000     # number of Monte Carlo paths
 Nt = 252       # number of time steps (trading days)
-mu = 0.06      # expected annual return
+r = 0.05      # expected annual return
 sigma = 0.4    # volatility
 S0 = 100       # initial stock price
-dt = 1/252     # time step
+dt = 1/Nt     # time step
 K = 100        # strike price
 ```
 
-The script prints the estimated **European put option price**.
+The script prints the estimated European put and call options price with $`95\%`$ confidence interval, together with the Black-Scholes pricing.
 
 ---
 
 ## Notes & Limitations
 
-* No discounting factor is applied (risk-neutral pricing is not enforced)
 * The random increments use a **±1 binomial model**, not Gaussian noise
 * This is not a production-grade pricing engine
 * Intended for learning and experimentation
@@ -146,8 +190,7 @@ The script prints the estimated **European put option price**.
 ## Requirements
 
 ```bash
-pip install numpy matplotlib
-```
+pip install numpy scipy
 
 ---
 
